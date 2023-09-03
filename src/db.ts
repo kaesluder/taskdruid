@@ -1,33 +1,18 @@
 import Dexie, { Table } from 'dexie';
 
+/**
+ * @interface Most of the expected and optional fields of a task object.
+ * @optional {number} id will be created internally when the record is stored
+ * @param {string} summary is a required summary
+ * @param {string} status of the task: PENDING, BLOCKED, BLOCKING, DONE...
+ */
 export interface ITask {
-  /**
-   * The id of the task. Optional.
-   */
   id?: number;
-  /**
-   * The summary of the task.
-   */
   summary: string;
-  /**
-   * The status of the task.
-   */
   status: string;
-  /**
-   * The tags associated with the task. Optional.
-   */
   tags?: string[];
-  /**
-   * The due date of the task. Optional.
-   */
   dateDue?: number;
-  /**
-   * The last modified date of the task. Optional.
-   */
   dateMod?: number;
-  /**
-   * The completion date of the task. Optional.
-   */
   dateCompleted?: number;
 }
 
