@@ -14,6 +14,7 @@ export interface ITask {
   dateDue?: number;
   dateMod?: number;
   dateCompleted?: number;
+  dateCreated?: number;
 }
 
 export class TasksDexie extends Dexie {
