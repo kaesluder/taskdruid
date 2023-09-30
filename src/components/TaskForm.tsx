@@ -43,7 +43,7 @@ export default function TaskForm(props: ITaskFormProps) {
   };
 
   const onTagsChangeHandler = (
-    event: React.SyntheticEvent<Element, Event>,
+    _: React.SyntheticEvent<Element, Event>,
     newValue: string[] | null
   ) => {
     console.log(newValue);
