@@ -32,6 +32,16 @@ export class TasksDexie extends Dexie {
       tasks: '++id, status, *tags ', // Primary key and indexed props
     });
   }
+
+  /**
+   * Async: fetches list of all tags used in db.
+   * @returns list of all tag values found in database
+   */
+  async getTags(): Promise<string[]> {
+    const tagsResult = await this.tasks.orderBy('tags').uniqueKeys();
+    const result: string[] = tagsResult.map((item) => item.toString());
+    return result;
+  }
 }
 
 export const db = new TasksDexie('TasksDexie');

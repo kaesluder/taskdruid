@@ -45,3 +45,11 @@ test('search by tag b returns 2 records', async () => {
   const queriedTask = await db.tasks.where('tags').equals('b').sortBy('id');
   expect(queriedTask.length).toBe(2);
 });
+
+test('getTags returns a list of all tags', async () => {
+  const db = await new TasksDexie('test5');
+  await db.tasks.add(testTask);
+  await db.tasks.add(testTask2);
+  const results = await db.getTags();
+  expect(results).toStrictEqual(['a', 'b', 'c']);
+});

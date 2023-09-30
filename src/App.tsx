@@ -1,17 +1,28 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { useState, useEffect } from 'react';
 import { TaskTable } from './components/TaskTable';
 import TaskForm from './components/TaskForm';
 import './App.css';
+import { db, ITask } from './db';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    db.getTags().then((t) => {
+      setTags(t);
+    });
+  }, []);
+
+  const formSubmitHandler = async (task: ITask) => {
+    console.log(task);
+    const id = await db.tasks.put(task);
+    console.log(id);
+  };
 
   return (
     <>
       <TaskTable></TaskTable>
-      <TaskForm></TaskForm>
+      <TaskForm tags={tags} formSubmitHandler={formSubmitHandler}></TaskForm>
     </>
   );
 }
