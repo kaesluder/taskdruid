@@ -6,10 +6,14 @@ import { db, ITask } from './db';
 
 function App() {
   const [tags, setTags] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>([]);
 
   useEffect(() => {
     db.getTags().then((t) => {
       setTags(t);
+    });
+    db.tasks.toArray().then((results) => {
+      setTasks(results);
     });
   }, []);
 
@@ -21,7 +25,7 @@ function App() {
 
   return (
     <>
-      <TaskTable></TaskTable>
+      <TaskTable tasks={tasks}></TaskTable>
       <TaskForm tags={tags} formSubmitHandler={formSubmitHandler}></TaskForm>
     </>
   );
