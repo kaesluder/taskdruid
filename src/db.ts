@@ -42,6 +42,30 @@ export class TasksDexie extends Dexie {
     const result: string[] = tagsResult.map((item) => item.toString());
     return result;
   }
+
+  /**
+   * Mark the status of a record as "DONE"
+   * @param id record id
+   * @returns number of records changed. Should be 1 if successful, 0 if
+   * id not found.
+   */
+  async markDone(id: number): Promise<number> {
+    const queryResult = await this.tasks.update(id, { status: 'DONE' });
+    console.log(`Marked done: ${queryResult}, id: ${id}`);
+    return queryResult;
+  }
+
+  /**
+   * Mark the status of a record as "PENDING"
+   * @param id record id
+   * @returns number of records changed. Should be 1 if successful, 0 if
+   * id not found.
+   */
+  async markPending(id: number): Promise<number> {
+    const queryResult = await this.tasks.update(id, { status: 'PENDING' });
+    console.log(`Marked pending: ${queryResult}, id: ${id}`);
+    return queryResult;
+  }
 }
 
 export const db = new TasksDexie('TasksDexie');
