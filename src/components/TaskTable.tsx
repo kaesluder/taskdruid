@@ -24,8 +24,6 @@ export const TaskTableRow = function (
 ) {
   const isDone: boolean = task.status === 'DONE' || task.status === 'CANCELED';
 
-  const [checked, setChecked] = useState(isDone);
-
   /**
    * Handler for PENDING/DONE toggle.
    * @param event checkbox change event
@@ -51,7 +49,7 @@ export const TaskTableRow = function (
       </TableCell>
       <TableCell>
         <Checkbox
-          checked={checked}
+          checked={isDone}
           onChange={handleChange}
           inputProps={{ 'aria-label': 'controlled' }}
         />

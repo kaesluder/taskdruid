@@ -15,7 +15,7 @@ import { ITask } from '../db';
 export interface ITaskFormProps {
   task?: ITask;
   tags?: string[];
-  formSubmitHandler?(arg1: ITask): void;
+  formSubmitHandler(arg1: ITask): void;
 }
 
 export default function TaskForm(props: ITaskFormProps) {
@@ -56,9 +56,7 @@ export default function TaskForm(props: ITaskFormProps) {
 
   const handleClose = () => {
     setOpen(false);
-    if (props.formSubmitHandler) {
-      props.formSubmitHandler(task);
-    }
+    props.formSubmitHandler(task);
   };
 
   const handleCancel = () => {

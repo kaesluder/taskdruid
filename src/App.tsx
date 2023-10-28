@@ -27,6 +27,7 @@ function App() {
     // This should do an *upsert*
     const id = await db.tasks.put(task);
     console.log(id);
+    refreshTable();
   };
 
   /**
