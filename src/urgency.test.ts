@@ -6,6 +6,7 @@ import {
   urgencyStatus,
   totalUrgency,
 } from './urgency';
+import { defaultTagUrgencyMap, defaultStatusUrgencyMap } from './defaults';
 
 const defaultTagConst: number = 1;
 
@@ -153,5 +154,18 @@ describe('urgencyStatus', () => {
     const priorityValueHash = new Map<string, number>();
 
     expect(urgencyStatus(task, priorityValueHash)).toBe(0);
+  });
+});
+
+describe('Test total urgency', () => {
+  it('due two weeks = 0, 2 tags = 2, pending = 0;', () => {
+    expect(
+      totalUrgency(
+        taskDueTwoWeeks,
+        defaultTagUrgencyMap,
+        defaultStatusUrgencyMap,
+        currentTestingDate
+      )
+    ).toBe(2);
   });
 });

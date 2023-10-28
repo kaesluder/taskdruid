@@ -1,7 +1,5 @@
 import { ITask } from './db';
-import { sameDay, formatTaskDate } from './due';
-import { defaultTagUrgencyMap, defaultPriorityUrgencyMap } from './defaults';
-import { it } from 'vitest';
+import { defaultTagUrgencyMap, defaultStatusUrgencyMap } from './defaults';
 
 /**
  * Due date urgency calculation.

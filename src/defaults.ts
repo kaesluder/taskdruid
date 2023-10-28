@@ -1,4 +1,4 @@
-export const defaultPriorityUrgencyMap = new Map(
+export const defaultStatusUrgencyMap = new Map(
   Object.entries({ PENDING: 0, HOLD: -5, DONE: -10 })
 );
 

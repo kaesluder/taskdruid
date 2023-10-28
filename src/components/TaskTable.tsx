@@ -8,6 +8,15 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { Chip } from '@mui/material';
+import { totalUrgency } from '../urgency';
+import { defaultStatusUrgencyMap, defaultTagUrgencyMap } from '../defaults';
+
+export const urgencySortComp = function (aTask: ITask, bTask: ITask) {
+  return (
+    totalUrgency(bTask, defaultTagUrgencyMap, defaultStatusUrgencyMap) -
+    totalUrgency(aTask, defaultTagUrgencyMap, defaultStatusUrgencyMap)
+  );
+};
 
 export const TaskTableRow = function (
   task: ITask,
@@ -23,7 +32,7 @@ export const TaskTableRow = function (
    * @returns 1 if successful, 0 if not, -1 if something is really wrong and no db call.
    */
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
+    // setChecked(event.target.checked);
     let queryResult = -1;
     if (event.target.checked === true) {
       queryResult = await db.markDone(task.id || -1);
@@ -37,7 +46,9 @@ export const TaskTableRow = function (
 
   return (
     <TableRow key={task.id}>
-      <TableCell>{task.id} </TableCell>
+      <TableCell>
+        {totalUrgency(task, defaultTagUrgencyMap, defaultStatusUrgencyMap)}{' '}
+      </TableCell>
       <TableCell>
         <Checkbox
           checked={checked}
@@ -63,6 +74,8 @@ interface ITaskTableProps {
 }
 
 export const TaskTable = function (props: ITaskTableProps) {
+  props.tasks.sort(urgencySortComp);
+
   return (
     <>
       <TableContainer component={Paper}>
