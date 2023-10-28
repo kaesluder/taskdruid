@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import InputLabel from '@mui/material/InputLabel';
 import DialogTitle from '@mui/material/DialogTitle';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -74,18 +73,19 @@ export default function TaskForm(props: ITaskFormProps) {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add/Edit Task</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="normal"
-            id="summary"
-            label="Summary"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={onSummaryChangeHandler}
-          />
           <FormControl fullWidth>
-            <InputLabel htmlFor="my-input">Status</InputLabel>
+            <TextField
+              autoFocus
+              margin="normal"
+              id="summary"
+              label="Summary"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={onSummaryChangeHandler}
+            />
+          </FormControl>
+          <FormControl fullWidth>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -100,26 +100,28 @@ export default function TaskForm(props: ITaskFormProps) {
             </Select>
           </FormControl>
 
-          <Autocomplete
-            multiple
-            id="tags-filled"
-            options={props.tags || []}
-            value={task.tags || []}
-            onChange={onTagsChangeHandler}
-            freeSolo
-            renderTags={(value: readonly string[], getTagProps) =>
-              value.map((option: string, index: number) => (
-                <Chip
-                  variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
-                />
-              ))
-            }
-            renderInput={(params) => (
-              <TextField {...params} variant="standard" label="Tags" />
-            )}
-          />
+          <FormControl fullWidth>
+            <Autocomplete
+              multiple
+              id="tags-filled"
+              options={props.tags || []}
+              value={task.tags || []}
+              onChange={onTagsChangeHandler}
+              freeSolo
+              renderTags={(value: readonly string[], getTagProps) =>
+                value.map((option: string, index: number) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField {...params} variant="standard" label="Tags" />
+              )}
+            />
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
