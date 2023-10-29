@@ -67,6 +67,7 @@ export default function TaskForm(props: ITaskFormProps) {
 
   const handleClose = () => {
     setOpen(false);
+    // TODO pressing escape should cancel rather than close.
     props.formSubmitHandler(task);
   };
 
@@ -77,13 +78,13 @@ export default function TaskForm(props: ITaskFormProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <div>
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
           Add Task
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Add/Edit Task</DialogTitle>
           <DialogContent>
-            <FormControl fullWidth>
+            <FormControl fullWidth margin={'normal'}>
               <TextField
                 autoFocus
                 margin="normal"
@@ -95,8 +96,6 @@ export default function TaskForm(props: ITaskFormProps) {
                 variant="standard"
                 onChange={onSummaryChangeHandler}
               />
-            </FormControl>
-            <FormControl fullWidth>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -109,9 +108,6 @@ export default function TaskForm(props: ITaskFormProps) {
                 <MenuItem value={'DONE'}>DONE</MenuItem>
                 <MenuItem value={'HOLD'}>HOLD</MenuItem>
               </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
               <Autocomplete
                 multiple
                 id="tags-filled"
@@ -132,9 +128,8 @@ export default function TaskForm(props: ITaskFormProps) {
                   <TextField {...params} variant="standard" label="Tags" />
                 )}
               />
-            </FormControl>
-            <FormControl fullWidth>
               <DatePicker
+                sx={{ marginTop: '1ex' }}
                 label={'Due Date'}
                 value={task.dateDue ? DateTime.fromMillis(task.dateDue) : null}
                 onChange={onDueDateChangeHandler}

@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import { AppBar } from '@mui/material';
 import { TaskTable } from './components/TaskTable';
 import TaskForm from './components/TaskForm';
 import './App.css';
@@ -43,8 +45,12 @@ function App() {
 
   return (
     <>
-      <TaskTable tasks={tasks} refresh={refreshTable}></TaskTable>
-      <TaskForm tags={tags} formSubmitHandler={formSubmitHandler}></TaskForm>
+      <AppBar position="static">
+        <TaskForm tags={tags} formSubmitHandler={formSubmitHandler}></TaskForm>
+      </AppBar>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <TaskTable tasks={tasks} refresh={refreshTable}></TaskTable>
+      </Box>
     </>
   );
 }
