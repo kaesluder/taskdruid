@@ -9,12 +9,13 @@ import { db, ITask } from './db';
 function App() {
   const [tags, setTags] = useState<string[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [getTaskFn, setGetTaskFn] = useState('ACTIVE');
 
   useEffect(() => {
     db.getTags().then((t) => {
       setTags(t);
     });
-    db.tasks.toArray().then((results) => {
+    db.getActive().then((results) => {
       setTasks(results);
     });
   }, []);
@@ -37,10 +38,17 @@ function App() {
    * from database.
    */
   const refreshTable = async () => {
-    db.tasks.toArray().then((results) => {
-      setTasks(results);
-      return;
-    });
+    if (getTaskFn === 'ACTIVE') {
+      db.getActive().then((results) => {
+        setTasks(results);
+        return;
+      });
+    } else {
+      db.getAll().then((results) => {
+        setTasks(results);
+        return;
+      });
+    }
   };
 
   return (

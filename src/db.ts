@@ -66,6 +66,27 @@ export class TasksDexie extends Dexie {
     console.log(`Marked pending: ${queryResult}, id: ${id}`);
     return queryResult;
   }
+
+  /**
+   * Async: Get all tasks from the database.
+   * @returns Promise list of all tasks in database.
+   */
+  async getAll(): Promise<ITask[]> {
+    return this.tasks.toArray();
+  }
+
+  /**
+   * Async: Get tasks with active status from the database.
+   * @returns Promise list of active tasks.
+   */
+  async getActive(): Promise<ITask[]> {
+    const activeTags = ['PENDING', 'TODO', 'STARTED'];
+    return this.tasks
+      .filter((task) => {
+        return activeTags.includes(task.status);
+      })
+      .toArray();
+  }
 }
 
 export const db = new TasksDexie('TasksDexie');
