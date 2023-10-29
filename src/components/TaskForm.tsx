@@ -78,7 +78,7 @@ export default function TaskForm(props: ITaskFormProps) {
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <div>
         <Button variant="outlined" onClick={handleClickOpen}>
-          Open form dialog
+          Add Task
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Add/Edit Task</DialogTitle>
