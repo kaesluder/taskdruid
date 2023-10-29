@@ -10,8 +10,9 @@ import Checkbox from '@mui/material/Checkbox';
 import { Chip } from '@mui/material';
 import { totalUrgency } from '../urgency';
 import { defaultStatusUrgencyMap, defaultTagUrgencyMap } from '../defaults';
+import { formatTaskDate } from '../due';
 
-export const urgencySortComp = function (aTask: ITask, bTask: ITask) {
+const urgencySortComp = function (aTask: ITask, bTask: ITask) {
   return (
     totalUrgency(bTask, defaultTagUrgencyMap, defaultStatusUrgencyMap) -
     totalUrgency(aTask, defaultTagUrgencyMap, defaultStatusUrgencyMap)
@@ -61,7 +62,9 @@ export const TaskTableRow = function (
         })}
       </TableCell>
       <TableCell>{task.status || ''}</TableCell>
-      <TableCell>Due: {task.dateDue || ''}</TableCell>
+      <TableCell>
+        Due: {formatTaskDate(task.dateDue ? task.dateDue : undefined) || ''}
+      </TableCell>
     </TableRow>
   );
 };

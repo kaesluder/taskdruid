@@ -11,7 +11,7 @@ export interface ITask {
   summary: string;
   status: string;
   tags?: string[];
-  dateDue?: number;
+  dateDue?: number | null;
   dateMod?: number;
   dateCompleted?: number;
   dateCreated?: number;

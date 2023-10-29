@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DateTime } from 'luxon';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -35,6 +38,14 @@ export default function TaskForm(props: ITaskFormProps) {
     setTask({ ...task, summary: value });
   };
 
+  const onDueDateChangeHandler = (value: DateTime | null) => {
+    // console.log(value.toUnixInteger());
+
+    const convertedValue = value ? value.toMillis() : null;
+    console.log(convertedValue);
+    setTask({ ...task, dateDue: convertedValue });
+  };
+
   const onStatusChangeHandler = (event: SelectChangeEvent) => {
     const value = event.target.value;
     setTask({ ...task, status: value });
@@ -64,68 +75,78 @@ export default function TaskForm(props: ITaskFormProps) {
   };
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add/Edit Task</DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth>
-            <TextField
-              autoFocus
-              margin="normal"
-              id="summary"
-              label="Summary"
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={onSummaryChangeHandler}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={task.status}
-              label="Status"
-              onChange={onStatusChangeHandler}
-              variant="standard"
-            >
-              <MenuItem value={'PENDING'}>PENDING</MenuItem>
-              <MenuItem value={'DONE'}>DONE</MenuItem>
-              <MenuItem value={'HOLD'}>HOLD</MenuItem>
-            </Select>
-          </FormControl>
+    <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Open form dialog
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Add/Edit Task</DialogTitle>
+          <DialogContent>
+            <FormControl fullWidth>
+              <TextField
+                autoFocus
+                margin="normal"
+                value={task.summary}
+                id="summary"
+                label="Summary"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={onSummaryChangeHandler}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={task.status}
+                label="Status"
+                onChange={onStatusChangeHandler}
+                variant="standard"
+              >
+                <MenuItem value={'PENDING'}>PENDING</MenuItem>
+                <MenuItem value={'DONE'}>DONE</MenuItem>
+                <MenuItem value={'HOLD'}>HOLD</MenuItem>
+              </Select>
+            </FormControl>
 
-          <FormControl fullWidth>
-            <Autocomplete
-              multiple
-              id="tags-filled"
-              options={props.tags || []}
-              value={task.tags || []}
-              onChange={onTagsChangeHandler}
-              freeSolo
-              renderTags={(value: readonly string[], getTagProps) =>
-                value.map((option: string, index: number) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField {...params} variant="standard" label="Tags" />
-              )}
-            />
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+            <FormControl fullWidth>
+              <Autocomplete
+                multiple
+                id="tags-filled"
+                options={props.tags || []}
+                value={task.tags || []}
+                onChange={onTagsChangeHandler}
+                freeSolo
+                renderTags={(value: readonly string[], getTagProps) =>
+                  value.map((option: string, index: number) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField {...params} variant="standard" label="Tags" />
+                )}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <DatePicker
+                label={'Due Date'}
+                value={task.dateDue ? DateTime.fromMillis(task.dateDue) : null}
+                onChange={onDueDateChangeHandler}
+              />
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button onClick={handleClose}>Save</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </LocalizationProvider>
   );
 }
