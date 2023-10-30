@@ -41,7 +41,7 @@ export default function TaskForm(props: ITaskFormProps) {
   const onDueDateChangeHandler = (value: DateTime | null) => {
     // console.log(value.toUnixInteger());
 
-    const convertedValue = value ? value.toMillis() : null;
+    const convertedValue = value ? value.toMillis() : undefined;
     console.log(convertedValue);
     setTask({ ...task, dateDue: convertedValue });
   };

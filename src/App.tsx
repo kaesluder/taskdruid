@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
 import { AppBar } from '@mui/material';
 import { TaskTable } from './components/TaskTable';
 import TaskForm from './components/TaskForm';
@@ -30,15 +32,22 @@ function App() {
     // This should do an *upsert*
     const id = await db.tasks.put(task);
     console.log(id);
-    refreshTable();
+    refreshTable(getTaskFn);
+  };
+
+  const handleViewChange = () => {
+    const flag = getTaskFn === 'ACTIVE' ? 'ALL' : 'ACTIVE';
+    refreshTable(flag);
+    setGetTaskFn(flag);
   };
 
   /**
    * Trigger a refresh of the table by reloading records
    * from database.
+   * @param flag: 'ACTIVE' | 'ALL'
    */
-  const refreshTable = async () => {
-    if (getTaskFn === 'ACTIVE') {
+  const refreshTable = async (flag: string) => {
+    if (flag === 'ACTIVE') {
       db.getActive().then((results) => {
         setTasks(results);
         return;
@@ -54,10 +63,23 @@ function App() {
   return (
     <>
       <AppBar position="static">
-        <TaskForm tags={tags} formSubmitHandler={formSubmitHandler}></TaskForm>
+        {' '}
+        <Toolbar disableGutters>
+          <TaskForm
+            tags={tags}
+            formSubmitHandler={formSubmitHandler}
+          ></TaskForm>
+          <Button variant="outlined" color="inherit" onClick={handleViewChange}>
+            View {getTaskFn === 'ACTIVE' ? 'ALL' : 'ACTIVE'}
+          </Button>
+        </Toolbar>
       </AppBar>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TaskTable tasks={tasks} refresh={refreshTable}></TaskTable>
+        <TaskTable
+          tasks={tasks}
+          refresh={refreshTable}
+          viewState={getTaskFn}
+        ></TaskTable>
       </Box>
     </>
   );

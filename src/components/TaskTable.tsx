@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ITask, db } from '../db';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -21,7 +20,8 @@ const urgencySortComp = function (aTask: ITask, bTask: ITask) {
 
 export const TaskTableRow = function (
   task: ITask,
-  refresh: () => Promise<void>
+  refresh: (viewState: string) => void,
+  viewState: string
 ) {
   const isDone: boolean = task.status === 'DONE' || task.status === 'CANCELED';
 
@@ -39,14 +39,18 @@ export const TaskTableRow = function (
       queryResult = await db.markPending(task.id || -1);
     }
 
-    refresh();
+    refresh(viewState);
     return queryResult;
   };
 
   return (
     <TableRow key={task.id}>
       <TableCell>
-        {totalUrgency(task, defaultTagUrgencyMap, defaultStatusUrgencyMap)}{' '}
+        {totalUrgency(
+          task,
+          defaultTagUrgencyMap,
+          defaultStatusUrgencyMap
+        ).toFixed(2)}{' '}
       </TableCell>
       <TableCell>
         <Checkbox
@@ -71,7 +75,8 @@ export const TaskTableRow = function (
 
 interface ITaskTableProps {
   tasks: ITask[];
-  refresh: () => Promise<void>;
+  refresh: (viewState: string) => void;
+  viewState: string;
 }
 
 export const TaskTable = function (props: ITaskTableProps) {
@@ -82,7 +87,9 @@ export const TaskTable = function (props: ITaskTableProps) {
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {props.tasks.map((t) => TaskTableRow(t, props.refresh))}
+            {props.tasks.map((t) =>
+              TaskTableRow(t, props.refresh, props.viewState)
+            )}
           </TableBody>
         </Table>
       </TableContainer>
